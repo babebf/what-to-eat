@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#fbf5ed" />
+    <title>今天要吃什麼？｜你的每日選餐轉盤</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;600;700;800;900&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="page-shell">
+      <header class="topbar">
+        <a class="brand" href="#top" aria-label="回到首頁">
+          <span class="brand-mark">✦</span>
+          <span>今天要吃什麼<span class="brand-dot">？</span></span>
+        </a>
+        <nav class="nav-links" aria-label="主要導覽">
+          <a class="active" href="#wheel-section">開始選餐</a>
+          <a href="#collection">我的餐點</a>
+          <a href="#admin" id="adminNav">管理後台</a>
+        </nav>
+        <button class="icon-button" id="themeButton" title="切換色彩模式" aria-label="切換色彩模式">☼</button>
+      </header>
+
+      <main id="top">
+        <section class="hero">
+          <div class="hero-copy">
+            <div class="eyebrow"><span class="eyebrow-line"></span> DAILY DECISION CLUB</div>
+            <h1>今天，讓<br /><em>轉盤</em> 幫你決定。</h1>
+            <p>把選擇留給命運，把時間留給好好吃飯。<br />轉一下，下一餐就有答案。</p>
+            <div class="hero-meta">
+              <div class="avatar-stack"><span>🍜</span><span>🍛</span><span>🥟</span><span>+</span></div>
+              <span><strong id="heroCount">12</strong> 個美味選項正在等你</span>
+            </div>
+          </div>
+          <div class="hero-note"><span class="note-star">✳</span><span>今天也要<br />好好吃飯</span></div>
+        </section>
+
+        <section class="workspace" id="wheel-section">
+          <aside class="side-panel">
+            <div class="section-label">01 / 選擇口味</div>
+            <h2>你今天想吃<br />哪一派？</h2>
+            <p class="muted">先縮小範圍，轉盤會更懂你。</p>
+            <div class="filters" id="filters"></div>
+            <button class="text-button" id="clearFilter">清除篩選 <span>↗</span></button>
+          </aside>
+
+          <div class="wheel-stage">
+            <div class="wheel-tip">今日靈感 <span>✦</span></div>
+            <div class="wheel-wrap">
+              <div class="wheel-shadow"></div>
+              <div class="wheel" id="wheel" aria-label="餐點轉盤"></div>
+              <div class="wheel-center"><span>吃<br />什麼</span></div>
+              <div class="pointer"><span></span></div>
+            </div>
+            <button class="spin-button" id="spinButton"><span class="spin-icon">↻</span> 幫我決定</button>
+            <p class="spin-hint">按下按鈕，讓今天的答案出現</p>
+          </div>
+
+          <aside class="result-panel">
+            <div class="section-label">02 / 今日結果</div>
+            <div class="result-card" id="resultCard">
+              <div class="result-placeholder" id="resultPlaceholder"><span class="result-icon">✦</span><strong>答案會在這裡出現</strong><span>轉動轉盤，發現你的下一餐</span></div>
+              <div class="result-content hidden" id="resultContent">
+                <span class="result-kicker">今天就吃這個</span>
+                <h3 id="resultName">—</h3>
+                <div class="result-details"><span id="resultCategory">—</span><span id="resultPrice">—</span></div>
+                <button class="save-button" id="saveResult">♡ 收藏這個選擇</button>
+              </div>
+            </div>
+            <div class="history" id="history"></div>
+          </aside>
+        </section>
+
+        <section class="collection-section" id="collection">
+          <div class="collection-heading">
+            <div><div class="section-label">03 / 餐點資料庫</div><h2>我的餐點清單 <span id="dishCount">12</span></h2></div>
+            <button class="add-button" id="openAdd">＋ 新增餐點</button>
+          </div>
+          <div class="dish-grid" id="dishGrid"></div>
+        </section>
+
+        <section class="admin-section" id="admin">
+          <div class="collection-heading">
+            <div><div class="section-label">04 / ADMIN CONSOLE</div><h2>餐點管理後台</h2><p class="muted">集中管理你的餐點資料，新增的內容會立即出現在轉盤裡。</p></div>
+            <div class="admin-actions"><button class="logout-button hidden" id="logoutButton">登出</button><button class="add-button" id="openAdminAdd">＋ 新增餐點</button></div>
+          </div>
+          <div class="admin-login-prompt hidden" id="adminLoginPrompt"><span class="lock-icon">⌑</span><strong>管理功能需要登入</strong><span>請先登入管理員帳號，才能新增或修改餐點。</span><button class="add-button" id="openLoginFromAdmin">管理員登入</button></div>
+          <div id="adminContent">
+          <div class="admin-stats">
+            <div class="stat-card"><span>餐點總數</span><strong id="adminTotal">0</strong><small>目前資料庫</small></div>
+            <div class="stat-card"><span>分類數量</span><strong id="adminCategories">0</strong><small>種口味選擇</small></div>
+            <div class="stat-card"><span>平均價格</span><strong id="adminAverage">—</strong><small>每道餐點</small></div>
+          </div>
+          <div class="admin-toolbar"><div class="admin-search"><span>⌕</span><input id="adminSearch" placeholder="搜尋餐點名稱或分類" /></div><span class="admin-hint">可直接編輯或移除資料</span></div>
+          <div class="admin-table-wrap"><table class="admin-table"><thead><tr><th>餐點</th><th>分類</th><th>價格</th><th>描述</th><th>操作</th></tr></thead><tbody id="adminTable"></tbody></table></div>
+          </div>
+        </section>
+      </main>
+
+      <footer><span>把選擇交給轉盤，把美味留給自己。</span><span>MADE FOR BETTER LUNCHES <b>✦</b></span></footer>
+    </div>
+
+    <dialog id="addDialog">
+      <form method="dialog" id="addForm">
+        <button class="modal-close" value="cancel" aria-label="關閉">×</button>
+        <div class="section-label" id="formEyebrow">ADD TO YOUR TABLE</div><h2 id="formTitle">新增一個好選擇</h2><p class="muted" id="formDescription">把你常吃、想吃、還沒吃過的都放進來。</p>
+        <label>餐點名稱<input required name="name" placeholder="例如：巷口牛肉麵" maxlength="24" /></label>
+        <div class="form-row"><label>分類<select name="category"><option>台式</option><option>日式</option><option>韓式</option><option>義式</option><option>泰式</option><option>美式</option><option>蔬食</option><option>甜點</option></select></label><label>價格區間<select name="price"><option value="$">$ 平價</option><option value="$$">$$ 剛剛好</option><option value="$$$">$$$ 犒賞自己</option></select></label></div>
+        <label>一句話形容<input name="tagline" placeholder="例如：熱呼呼的療癒系首選" maxlength="36" /></label>
+        <button class="submit-button" value="default">加入我的餐點 <span>↗</span></button>
+      </form>
+    </dialog>
+    <dialog id="loginDialog">
+      <form method="dialog" id="loginForm">
+        <button class="modal-close" value="cancel" aria-label="關閉">×</button>
+        <div class="login-mark">✦</div><div class="section-label">ADMIN ACCESS</div><h2>登入管理後台</h2><p class="muted">登入後即可管理你的餐點資料庫。</p>
+        <label>管理員帳號<input required name="username" autocomplete="username" placeholder="輸入帳號" /></label>
+        <label>管理員密碼<input required name="password" type="password" autocomplete="current-password" placeholder="輸入密碼" /></label>
+        <p class="login-error" id="loginError"></p><button class="submit-button" value="default">登入管理後台 <span>↗</span></button>
+      </form>
+    </dialog>
+    <div class="toast" id="toast" role="status"></div>
+    <script src="app.js"></script>
+  </body>
+</html>
