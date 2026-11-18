@@ -22,7 +22,7 @@
           <a href="#collection">我的餐點</a>
           <a href="#admin" id="adminNav">管理後台</a>
         </nav>
-        <button class="icon-button" id="themeButton" title="切換色彩模式" aria-label="切換色彩模式">☼</button>
+        <div class="topbar-actions"><button class="cart-button" id="openCart" aria-label="開啟購物車">🛒 <span>購物車</span><b id="cartCount">0</b></button><button class="icon-button" id="themeButton" title="切換色彩模式" aria-label="切換色彩模式">☼</button></div>
       </header>
 
       <main id="top">
@@ -121,6 +121,26 @@
         <button class="submit-button" value="default">加入我的餐點 <span>↗</span></button>
       </form>
     </dialog>
+    <dialog id="cartDialog">
+      <form method="dialog" id="cartForm">
+        <button class="modal-close" value="cancel" aria-label="關閉">×</button>
+        <div class="section-label">YOUR ORDER</div><h2>購物車</h2><p class="muted">確認餐點後，再填寫聯絡資料完成訂單。</p>
+        <div class="cart-items" id="cartItems"></div>
+        <div class="cart-total"><span>預估總金額</span><strong id="cartTotal">$0</strong></div>
+        <button type="button" class="submit-button" id="openCheckout">前往填寫資料 <span>↗</span></button>
+      </form>
+    </dialog>
+    <dialog id="checkoutDialog">
+      <form method="dialog" id="checkoutForm">
+        <button class="modal-close" value="cancel" aria-label="關閉">×</button>
+        <div class="section-label">CHECKOUT</div><h2>留下資料，完成點餐</h2><p class="muted">店家可依姓名與電話確認你的訂單。</p>
+        <label>姓名<input required name="customerName" autocomplete="name" placeholder="例如：王小明" maxlength="20" /></label>
+        <label>電話<input required name="phone" type="tel" autocomplete="tel" pattern="[0-9+\- ]{8,15}" placeholder="例如：0912345678" /></label>
+        <label>付款方式<select name="payment"><option value="到店付款">到店付款（取餐時付款）</option></select></label>
+        <label>備註（選填）<input name="note" maxlength="60" placeholder="例如：餐點分開裝" /></label>
+        <button class="submit-button" value="default">送出訂單 <span>↗</span></button>
+      </form>
+    </dialog>
     <dialog id="loginDialog">
       <form method="dialog" id="loginForm">
         <button class="modal-close" value="cancel" aria-label="關閉">×</button>
@@ -131,6 +151,6 @@
       </form>
     </dialog>
     <div class="toast" id="toast" role="status"></div>
-    <script src="app.js?v=4"></script>
+    <script src="app.js?v=5"></script>
   </body>
 </html>
