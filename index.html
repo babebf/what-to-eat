@@ -100,7 +100,9 @@
             <div class="stat-card"><span>平均價格</span><strong id="adminAverage">—</strong><small>每道餐點</small></div>
           </div>
           <div class="admin-toolbar"><div class="admin-search"><span>⌕</span><input id="adminSearch" placeholder="搜尋餐點名稱或分類" /></div><span class="admin-hint">可直接編輯或移除資料</span></div>
-          <div class="admin-category-tabs" id="adminCategoryTabs" aria-label="後台餐點分類"></div>
+          <div class="admin-category-tabs" id="adminCategoryTabs" aria-label="後台餐點分類">
+            <button class="admin-category-tab selected" data-admin-category="全部">全部<span>462</span></button><button class="admin-category-tab" data-admin-category="台式">台式</button><button class="admin-category-tab" data-admin-category="日式">日式</button><button class="admin-category-tab" data-admin-category="韓式">韓式</button><button class="admin-category-tab" data-admin-category="義式">義式</button><button class="admin-category-tab" data-admin-category="泰式">泰式</button><button class="admin-category-tab" data-admin-category="美式">美式</button><button class="admin-category-tab" data-admin-category="蔬食">蔬食</button><button class="admin-category-tab" data-admin-category="甜點">甜點</button><button class="admin-category-tab" data-admin-category="飲料">飲料</button>
+          </div>
           <div class="admin-table-wrap"><table class="admin-table"><thead><tr><th>餐點</th><th>分類</th><th>價格</th><th>描述</th><th>操作</th></tr></thead><tbody id="adminTable"></tbody></table></div>
           </div>
         </section>
@@ -129,6 +131,6 @@
       </form>
     </dialog>
     <div class="toast" id="toast" role="status"></div>
-    <script src="app.js?v=3"></script>
+    <script src="app.js?v=4"></script>
   </body>
 </html>
