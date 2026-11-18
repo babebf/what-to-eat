@@ -13,11 +13,24 @@ const seedDishes = [
   {name:'豆花甜點',category:'甜點',price:'$',tagline:'留一點甜，給今天收尾',emoji:'🍮'}
 ];
 const categoryEmoji={台式:'🍚',日式:'🍣',韓式:'🥢',義式:'🍝',泰式:'🌶️',美式:'🍔',蔬食:'🥗',甜點:'🍮'};
+const bulkBlueprints={
+  台式:{emoji:'🍚',range:[75,190],bases:['排骨便當','雞腿便當','滷肉飯','牛肉麵','鍋燒意麵','鹽酥雞','鱸魚便當','控肉飯','蚵仔麵線','麻醬麵'],variants:['經典','加蛋','雙主菜','豪華','外帶']},
+  日式:{emoji:'🍣',range:[110,360],bases:['豚骨拉麵','醬油拉麵','鮭魚定食','唐揚雞定食','生魚片丼','炙燒牛丼','咖哩飯','親子丼','壽司套餐','天婦羅定食'],variants:['經典','炙燒','特盛','季節','匠選']},
+  韓式:{emoji:'🥢',range:[150,380],bases:['韓式炸雞','石鍋拌飯','韓式烤肉','部隊鍋','海鮮煎餅','辣炒年糕','韓式冷麵','泡菜鍋','人蔘雞','韓式飯捲'],variants:['原味','辣味','起司','雙人','豪華']},
+  義式:{emoji:'🍝',range:[170,430],bases:['青醬義大利麵','白醬義大利麵','番茄肉醬麵','海鮮燉飯','松露燉飯','窯烤披薩','焗烤千層麵','義式燉雞','牛肝菌麵','義式沙拉'],variants:['經典','起司','海鮮','松露','主廚']},
+  泰式:{emoji:'🌶️',range:[120,320],bases:['打拋豬飯','月亮蝦餅','綠咖哩','紅咖哩','泰式酸辣麵','椒麻雞','泰式炒河粉','冬蔭功湯','檸檬魚','金錢蝦餅'],variants:['經典','加蛋','海鮮','雙人','香辣']},
+  美式:{emoji:'🍔',range:[150,440],bases:['起司漢堡','培根漢堡','炸雞漢堡','美式熱狗','BBQ豬肋排','紐約披薩','炸雞拼盤','牛排套餐','酪梨吐司','奶油蛤蜊麵'],variants:['經典','雙層','起司','豪華','套餐']},
+  蔬食:{emoji:'🥗',range:[100,280],bases:['蔬食沙拉碗','野菇燉飯','蔬食咖哩','豆腐排套餐','南瓜濃湯','蔬菜捲餅','藜麥便當','番茄義大利麵','全植物漢堡','蔬食火鍋'],variants:['經典','高蛋白','季節','豐盛','輕食']},
+  甜點:{emoji:'🍮',range:[55,220],bases:['豆花','芋圓甜湯','提拉米蘇','巴斯克蛋糕','法式可麗露','水果鬆餅','抹茶千層','焦糖布丁','可頌甜甜圈','冰淇淋聖代'],variants:['經典','加料','季節','豪華','雙人']},
+  飲料:{emoji:'🧋',range:[35,180],bases:['珍珠奶茶','鮮奶茶','水果茶','美式咖啡','拿鐵咖啡','手沖咖啡','抹茶拿鐵','氣泡飲','鮮榨果汁','豆漿'],variants:['中杯','大杯','少冰','燕麥奶','加料']}
+};
+function buildBulkDishes(){const result=[];Object.entries(bulkBlueprints).forEach(([category,blueprint])=>{blueprint.bases.forEach((base,baseIndex)=>blueprint.variants.forEach((variant,variantIndex)=>{const [min,max]=blueprint.range;const price=Math.round((min+(max-min)*((baseIndex*5+variantIndex)%10)/9)/5)*5;result.push({name:`${variant}${base}`,category,price:price<100?'$':price<220?'$$':price<350?'$$$':'$$$$',tagline:`${category}人氣選擇，現在吃正剛好`,emoji:blueprint.emoji,bulkSeed:true})}))});return result}
+const bulkDishes=buildBulkDishes();
 let dishes=[], activeCategory='全部', selectedResult=null, rotation=0, spinning=false, editingId=null, isAdmin=sessionStorage.getItem('foodAdminSession')==='true';
 const $=s=>document.querySelector(s); const $$=s=>[...document.querySelectorAll(s)];
 const dbRequest=indexedDB.open('what-to-eat-db',1);
 dbRequest.onupgradeneeded=e=>e.target.result.createObjectStore('dishes',{keyPath:'id',autoIncrement:true});
-dbRequest.onsuccess=async e=>{window.db=e.target.result; const all=await readAll(); if(!all.length){for(const dish of seedDishes) await saveDish(dish); dishes=await readAll()}else dishes=all; render()};
+dbRequest.onsuccess=async e=>{window.db=e.target.result; const all=await readAll(); if(!all.length){for(const dish of [...seedDishes,...bulkDishes]) await saveDish(dish); localStorage.setItem('foodMenuVersion','2'); dishes=await readAll()}else{dishes=all;if(localStorage.getItem('foodMenuVersion')!=='2'){for(const dish of bulkDishes){if(!dishes.some(existing=>existing.name===dish.name&&existing.category===dish.category))await saveDish(dish)}localStorage.setItem('foodMenuVersion','2');dishes=await readAll()}} render()};
 dbRequest.onerror=()=>{dishes=seedDishes.map((d,i)=>({...d,id:i+1}));render();toast('瀏覽器資料庫無法使用，將暫時使用記憶資料')};
 function transaction(mode='readonly'){return db.transaction('dishes',mode).objectStore('dishes')}
 function readAll(){return new Promise((res,rej)=>{const r=transaction().getAll();r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error)})}
